@@ -1,6 +1,9 @@
 ﻿@page "/blocks"
 
 <!-- TODO: Add using and inject statements -->
+@using CP380_B1_BlockList.Models
+@using CP380_B3_BlockBlazor.Data
+@inject BlockService blockService
 
 <h3>Blocks</h3>
 
@@ -20,6 +23,20 @@ else
                         - the nonce
                         - the previous hash
           -->
+         @{ var position = 0;}
+        @foreach (var block in blocklist)
+        {
+            <div class="card" style="width: 24rem;">
+                <div class="card-body">
+                    <h4 class="card-title" align="center">Block @position</h4>
+                    <p class="card-text">Position: @position</p>
+                    <p class="card-text">Hash: @block.Hash</p>
+                    <p class="card-text">Nonce: @block.Nonce</p>
+                    <p class="card-text">Previous Hash: "@block.PreviousHash"</p>
+                </div>
+            </div>
+            position++;
+        }
 
     </div>
 }
@@ -30,5 +47,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         // TODO: fetch blocks from the BlockService
+        blocklist = await blockService.GetBlocksAsync();
     }
 }
